@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PLCTageReader.Properties {
+namespace Demo.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -46,5 +46,8 @@ namespace PLCTageReader.Properties {
                 this["PartNumberTag"] = value;
             }
         }
+
+        public string HeartBeatTag { get; internal set; }
+        public string TriggerTag { get; internal set; }
     }
 }
