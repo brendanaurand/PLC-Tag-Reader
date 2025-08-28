@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Demo.Properties {
+namespace PLCTageReader.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -38,12 +38,12 @@ namespace Demo.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string TagName {
+        public string PartNumberTag {
             get {
-                return ((string)(this["TagName"]));
+                return ((string)(this["PartNumberTag"]));
             }
             set {
-                this["TagName"] = value;
+                this["PartNumberTag"] = value;
             }
         }
     }

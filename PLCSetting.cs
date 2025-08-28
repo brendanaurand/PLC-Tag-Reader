@@ -24,17 +24,17 @@ namespace Demo
         [Category("Tags")]
         [DisplayName("PartNumber")]
         [Description("tag name of string used for current part number.\nset by plc and monitored for change event in app")]
-        public string TagName { get; set; } = "";
+        public string PartNumberTag { get; set; } = "";
 
         [Category("Tags")]
         [DisplayName("HeartBeat")]
         [Description("tag name of bool used for plc heartbeat.\nset high by application and set low by plc. plc monitors if tag is low for too long")]
-        public string HeartBeatTag { get; set; } = "";
+        public string? HeartBeatTag { get; set; } = null;
 
         [Category("Tags")]
         [DisplayName("Trigger")]
         [Description("tag name of boolean used for laser trigger.\nenergized by plc and monitored for change event in app. goes low if done bool is high")]
-        public string TriggerTag { get; set; } = "";
+        public string? TriggerTag { get; set; } = null;
 
 
 
@@ -116,28 +116,28 @@ namespace Demo
                 if (PLCHelper.PLCClient == null)
                     throw new Exception("Failed To Get PartNumberValue. PLC Not Connected");
 
-                if (string.IsNullOrWhiteSpace(TagName))
+                if (string.IsNullOrWhiteSpace(PartNumberTag))
                     throw new Exception("Failed To Get PartNumberValue. PartNumber Tag Not Set");
 
-                if (!PLCHelper.PLCClient.IsReadable(TagName))
-                    throw new Exception($"Failed To Get RetryValue. Tag '{TagName}' Not Readable");
+                if (!PLCHelper.PLCClient.IsReadable(PartNumberTag))
+                    throw new Exception($"Failed To Get RetryValue. Tag '{PartNumberTag}' Not Readable");
 
-                return PLCHelper.PLCClient.ReadTag(TagName, true, false).ToString();
+                return PLCHelper.PLCClient.ReadTag(PartNumberTag, true, false).ToString();
             }
             set
             {
                 if (PLCHelper.PLCClient == null)
                     throw new Exception("Failed To Set PartNumberValue. PLC Not Connected");
 
-                if (string.IsNullOrWhiteSpace(TagName))
+                if (string.IsNullOrWhiteSpace(PartNumberTag))
                     throw new Exception("Failed To Set PartNumberValue. PartNumber Tag Not Set");
 
-                if (!PLCHelper.PLCClient.IsWritable(TagName))
-                    throw new Exception($"Failed To Set PartNumberValue. Tag '{TagName}' Not Readable");
+                if (!PLCHelper.PLCClient.IsWritable(PartNumberTag))
+                    throw new Exception($"Failed To Set PartNumberValue. Tag '{PartNumberTag}' Not Readable");
 
-                var success = PLCHelper.PLCClient.WriteTag(TagName, value, false, false);
+                var success = PLCHelper.PLCClient.WriteTag(PartNumberTag, value, false, false);
                 if (!success)
-                    throw new Exception($"Failed To Set PartNumberValue. Tag '{TagName}' Not Writable");
+                    throw new Exception($"Failed To Set PartNumberValue. Tag '{PartNumberTag}' Not Writable");
             }
         }
 

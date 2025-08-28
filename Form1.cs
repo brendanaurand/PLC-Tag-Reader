@@ -7,19 +7,28 @@ namespace Demo
         // Add a new button called 'btnTest' to the form
         
         private Button btnConnect;
-        private Button btnTrigger;
+        
+        
 
 
         public Form1()
         {
             InitializeComponent();
             InitializeConnectButton();
+
+            tmrPLCHeartbeat = new System.Windows.Forms.Timer();
+            tmrPLCHeartbeat.Interval = 500; // Poll every 500ms (adjust as needed)
+            tmrPLCHeartbeat.Tick += TmrPLCHeartbeat_Tick;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             textBox1.Text = Properties.Settings.Default.IPAddress;
-            textBox2.Text = Properties.Settings.Default.TagName;
+            textBox2.Text = Properties.Settings.Default.PartNumberTag;
+            textBox3.Text = Properties.Settings.Default.HeartBeatTag;
+            textBox4.Text = Properties.Settings.Default.TriggerTag;
+
+
         }
 
         private void InitPLC()
@@ -30,8 +39,8 @@ namespace Demo
                 {
                     // User Input for IP Address and Tags
                     IPAddress = textBox1.Text,
-                    TagName = textBox2.Text,
-                    TriggerTag = textBox2.Text,
+                    PartNumberTag = textBox2.Text,
+                    TriggerTag = textBox4.Text,
                     HeartBeatTag = textBox3.Text
                 };
                 // create new plc client
@@ -41,8 +50,9 @@ namespace Demo
                     MessageBox.Show(message);
                     
                 }
-
                 InitPolling();
+
+
             }
             catch (Exception ex)
             {
@@ -55,23 +65,31 @@ namespace Demo
         {
             try
             {
-                tmrPLCHeartbeat.Interval = 5000;
+               
                 tmrPLCHeartbeat.Enabled = true;
 
+
+                
                 //add to polling for PLC tags
-                PLCHelper.PLCClient.ReadTag(CurrentPLCSettings.TagName, true, true);
-                PLCHelper.PLCClient.ReadTag(CurrentPLCSettings.HeartBeatTag, true, true);
+                PLCHelper.PLCClient.ReadTag(CurrentPLCSettings.PartNumberTag, true, true);
+                
+                if (!string.IsNullOrWhiteSpace(CurrentPLCSettings.HeartBeatTag)) 
+                    PLCHelper.PLCClient.ReadTag(CurrentPLCSettings.HeartBeatTag, true, true);
+                
                 PLCHelper.PLCClient.ReadTag(CurrentPLCSettings.TriggerTag, true, true);
 
                 //setup PLC tag change event handlers. 
-                PLCHelper.PLCClient.Symbols[CurrentPLCSettings.TagName].ValueChanged -= plcPartNumberValueChanged;
-                PLCHelper.PLCClient.Symbols[CurrentPLCSettings.TagName].ValueChanged += plcPartNumberValueChanged;
-
-                PLCHelper.PLCClient.Symbols[CurrentPLCSettings.HeartBeatTag].ValueChanged -= plcHeartBeatValueChanged;
-                PLCHelper.PLCClient.Symbols[CurrentPLCSettings.HeartBeatTag].ValueChanged += plcHeartBeatValueChanged;
+                PLCHelper.PLCClient.Symbols[CurrentPLCSettings.PartNumberTag].ValueChanged -= plcPartNumberValueChanged;
+                PLCHelper.PLCClient.Symbols[CurrentPLCSettings.PartNumberTag].ValueChanged += plcPartNumberValueChanged;
+                
+                if (!string.IsNullOrWhiteSpace(CurrentPLCSettings.HeartBeatTag))
+                    PLCHelper.PLCClient.Symbols[CurrentPLCSettings.HeartBeatTag].ValueChanged -= plcHeartBeatValueChanged;
+                if (!string.IsNullOrWhiteSpace(CurrentPLCSettings.HeartBeatTag))
+                    PLCHelper.PLCClient.Symbols[CurrentPLCSettings.HeartBeatTag].ValueChanged += plcHeartBeatValueChanged;
 
                 PLCHelper.PLCClient.Symbols[CurrentPLCSettings.TriggerTag].ValueChanged -= plcTriggerValueChanged;
                 PLCHelper.PLCClient.Symbols[CurrentPLCSettings.TriggerTag].ValueChanged += plcTriggerValueChanged;
+
 
             }
             catch (Exception ex)
@@ -111,15 +129,15 @@ namespace Demo
             try
             {
                 Console.WriteLine($"Part Number Changed: {e.Value}");
-                if (labelTagName.InvokeRequired)
+                if (labelPartNumber.InvokeRequired)
                 {
                     // Use Invoke to call the method on the UI thread
-                    labelTagName.Invoke(new Action(() => labelTagName.Text = e.Value.ToString()));
+                    labelPartNumber.Invoke(new Action(() => labelPartNumber.Text = e.Value.ToString()));
                 }
                 else
                 {
                     // If already on the UI thread, update the label directly
-                    labelTagName.Text = e.Value.ToString();
+                    labelPartNumber.Text = e.Value.ToString();
                 }
             }
             catch (Exception ex)
@@ -157,16 +175,44 @@ namespace Demo
         private void BtnConnect_Click(object sender, EventArgs e)
         {
             Properties.Settings.Default.IPAddress = textBox1.Text;
-            Properties.Settings.Default.TagName = textBox2.Text;
-            
+            Properties.Settings.Default.PartNumberTag = textBox2.Text;
+            Properties.Settings.Default.HeartBeatTag = textBox3.Text;
+            Properties.Settings.Default.TriggerTag = textBox4.Text;
+
+
+
             // Add More Settings As Needed
             Properties.Settings.Default.Save();
 
             // Now uses the current values in settings
             InitPLC();
         }
+        private void TmrPLCHeartbeat_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                // Read the current value of the PartNumber tag
+                var value = PLCHelper.PLCClient.ReadTag(CurrentPLCSettings.PartNumberTag, true, false);
 
-       
+                // Update the label on the UI thread
+                if (labelPartNumber.InvokeRequired)
+                {
+                    labelPartNumber.Invoke(new Action(() => labelPartNumber.Text = value?.ToString() ?? ""));
+                }
+                else
+                {
+                    labelPartNumber.Text = value?.ToString() ?? "";
+                }
+            }
+            catch (Exception ex)
+            {
+                // Optionally show error or log
+                labelPartNumber.Text = $"Error: {ex.Message}";
+            }
+        }
+
+
+
     }
 
 }

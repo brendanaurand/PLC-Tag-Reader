@@ -5,7 +5,7 @@
     <Setting Name="IPAddress" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="TagName" Type="System.String" Scope="User">
+    <Setting Name="PartNumberTag" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

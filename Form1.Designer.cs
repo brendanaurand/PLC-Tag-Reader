@@ -31,71 +31,91 @@
             components = new System.ComponentModel.Container();
             tmrPLCHeartbeat = new System.Windows.Forms.Timer(components);
             btnHeartBeat = new Button();
-            labelTagName = new Label();
+            labelPartNumber = new Label();
             textBox1 = new TextBox();
-            label1 = new Label();
+            labelIPAddress = new Label();
             textBox2 = new TextBox();
             textBox3 = new TextBox();
+            textBox4 = new TextBox();
+            labelTriggerTag = new Label();
             SuspendLayout();
             // 
             // btnHeartBeat
             // 
-            btnHeartBeat.Location = new Point(75, 87);
+            btnHeartBeat.Location = new Point(106, 129);
             btnHeartBeat.Name = "btnHeartBeat";
             btnHeartBeat.Size = new Size(94, 29);
             btnHeartBeat.TabIndex = 0;
             btnHeartBeat.Text = "HeartBeat";
             btnHeartBeat.UseVisualStyleBackColor = true;
             // 
-            // labelTagName
+            // labelPartNumber
             // 
-            labelTagName.AutoSize = true;
-            labelTagName.Location = new Point(502, 163);
-            labelTagName.Name = "labelTagName";
-            labelTagName.Size = new Size(79, 20);
-            labelTagName.TabIndex = 1;
-            labelTagName.Text = "Tag Status:";
+            labelPartNumber.AutoSize = true;
+            labelPartNumber.Location = new Point(121, 73);
+            labelPartNumber.Name = "labelPartNumber";
+            labelPartNumber.Size = new Size(79, 20);
+            labelPartNumber.TabIndex = 1;
+            labelPartNumber.Text = "Part Number:";
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(267, 146);
+            textBox1.Location = new Point(75, 43);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(125, 27);
             textBox1.TabIndex = 2;
             // 
-            // label1
+            // labelIPAddress
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(279, 123);
-            label1.Name = "label1";
-            label1.Size = new Size(76, 20);
-            label1.TabIndex = 3;
-            label1.Text = "IP Adress: ";
+            labelIPAddress.AutoSize = true;
+            labelIPAddress.Location = new Point(124, 20);
+            labelIPAddress.Name = "labelIPAddress";
+            labelIPAddress.Size = new Size(76, 20);
+            labelIPAddress.TabIndex = 3;
+            labelIPAddress.Text = "IP Adress: ";
             // 
             // textBox2
             // 
-            textBox2.Location = new Point(480, 133);
+            textBox2.Location = new Point(75, 96);
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(125, 27);
             textBox2.TabIndex = 4;
             // 
             // textBox3
             // 
-            textBox3.Location = new Point(60, 123);
+            textBox3.Location = new Point(75, 164);
             textBox3.Name = "textBox3";
             textBox3.Size = new Size(125, 27);
             textBox3.TabIndex = 5;
+            // 
+            // textBox4
+            // 
+            textBox4.Location = new Point(262, 43);
+            textBox4.Name = "textBox4";
+            textBox4.Size = new Size(125, 27);
+            textBox4.TabIndex = 6;
+            // 
+            // labelTriggerTag
+            // 
+            labelTriggerTag.AutoSize = true;
+            labelTriggerTag.Location = new Point(262, 20);
+            labelTriggerTag.Name = "labelTriggerTag";
+            labelTriggerTag.Size = new Size(86, 20);
+            labelTriggerTag.TabIndex = 7;
+            labelTriggerTag.Text = "Trigger Tag:";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(640, 360);
+            Controls.Add(labelTriggerTag);
+            Controls.Add(textBox4);
             Controls.Add(textBox3);
             Controls.Add(textBox2);
-            Controls.Add(label1);
+            Controls.Add(labelIPAddress);
             Controls.Add(textBox1);
-            Controls.Add(labelTagName);
+            Controls.Add(labelPartNumber);
             Controls.Add(btnHeartBeat);
             Margin = new Padding(2);
             Name = "Form1";
@@ -109,10 +129,12 @@
 
         private System.Windows.Forms.Timer tmrPLCHeartbeat;
         private Button btnHeartBeat;
-        private Label labelTagName;
         private TextBox textBox1;
-        private Label label1;
+        private Label labelIPAddress;
         private TextBox textBox2;
         private TextBox textBox3;
+        private TextBox textBox4;
+        private Label labelTriggerTag;
+        public Label labelPartNumber;
     }
 }
